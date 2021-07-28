@@ -5,7 +5,7 @@ author: "Yaxin Liu"
 date: "07/28/2021"
 output:
   xaringan::moon_reader:
-    yolo: true
+    transition: fade
     self_contained: true
     lib_dir: libs
     nature:
@@ -16,11 +16,32 @@ output:
 ```{r include=FALSE}
 library(leaflet)
 library(knitr)
-library(webshot)
+```
+
+
+```{r xaringan-tile-view, echo=FALSE}
+xaringanExtra::use_tile_view()
 ```
 class: center, middle
+```{r xaringanExtra-search, echo=FALSE}
+xaringanExtra::use_search(show_icon = TRUE)
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+xaringanExtra::use_clipboard()
+```
+
+
+```{r xaringan-editable, echo=FALSE}
+xaringanExtra::use_editable(expires = 1)
+```
 
 ### hyperlinks are clickable in this tutorial
+You may also search the content
+
+press letter `o` to toggle slides
+
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
@@ -49,11 +70,11 @@ class: left, middle
 
 ---
 class: inverse, center, middle
-# Basic Qualtrics
+# Qualtrics basics
 
 
 ---
-# Qualtrics
+# Qualtrics 
 
 Obtain your **licenced** account from [Emory IT department](http://college.emory.edu/business-operations/information-technology/faqs.html):
 
@@ -78,31 +99,45 @@ You are recommended to use the [Qualtrics](https://emorycollege.co1.qualtrics.co
 ]
 
 ---
-# sample consent form
+# Qualtrics branching
 
-```{r echo=FALSE}
-knitr::include_url("https://emorycollege.co1.qualtrics.com/jfe/form/SV_8G4CBJr4Fe43PaC")
+- You will have two branches. One for participants who complete the survey, the other for participants who click "Do not consent". 
+
+```{r echo=FALSE,out.width="80%",fig.align='center' }
+knitr::include_graphics("consent_branching.png")
+```
+
+- Create a End of study message 
+`Messages Library -> New Message`
+
+```{r echo=FALSE,out.width="40%",fig.align='center' }
+knitr::include_graphics("end_message.png")
 ```
 
 ---
+# sample consent form.can-edit[]
+
+```{r echo=FALSE}
+knitr::include_url("https://emorycollege.co1.qualtrics.com/jfe/form/SV_5oRtfSVUgYc8yvc")
+```
 
 ---
 class: inverse, center, middle
 
-# Basic Pavlovia
+# Pavlovia Basics
 
 Assuming you already have an activated study uploaded to Pavlovia
 
 ```{r echo=FALSE}
-knitr::include_url("https://pavlovia.org/run/Yliu668/mrt_ganis_rep/html/")
+knitr::include_url("https://pavlovia.org/run/Yliu668/mrt_rtb21/html/")
 ```
 
 ---
 # Passing in a participant ID to _Pavlovia_
 
-You most likely have a main experiment for your participants. Participants'IDs should be carried to Pavolovia.
+You most likely have a main experiment for your participants. Participants'IDs should be send to Pavolovia.
 
-1. Use the Embed field in Qualtrics; `add a new field`
+1. Use the Embed field in Qualtrics; `add a new field`:  `prolific_ID` , `gender`, or more
 
 ```yaml
 prolific_ID = ${q://QID107/ChoiceTextEntryValue}
@@ -130,18 +165,59 @@ knitr::include_url("https://run.pavlovia.org/Yliu668/mrt_rtb21/html?participant=
 
 
 ---
-# Passing an ID from _Prolific_ directly
+# Passing an ID from Prolific to Qualtrics
 
-You can see an introduction of this chaining from [this documentation](https://www.psychopy.org/online/prolificIntegration.html). 
+## Option 1 
 
-- configure URL parameters
-- 
+- Add a question in your Qualtrics form
+- Ask participants to copy and paste their Prolific IDs
 
-```{r echo=FALSE,out.width="50%" }
-knitr::include_graphics("https://www.psychopy.org/_images/prolificSettingsInsertParams.png")
+```{r echo=FALSE,out.width="100%" }
+knitr::include_graphics("https://s3.amazonaws.com/uploads.intercomcdn.com/i/o/14359998/c78630112107ef6e93f9a5ed/file-Ck7JjkGKP7.png")
 ```
+
 ---
-# Completion url
+# Passing an ID from Prolific to Qualtrics
+
+### Option 2 (recommended)
+
+#### Prolific
+- Select     **`I'll use URL parameters`** and click `configure URL parameters`
+
+```yaml
+https://emorycollege.co1.qualtrics.com/jfe/form/SV_5oRtfSVUgYc8yvc?PROLIFIC_auto_ID={{%PROLIFIC_PID%}}
+```
+#### Qualtrics
+- Add .can-edit[query strings] to your question (`right click ->Default Choices -> Embedded Data Field`)
+
+```{r echo=FALSE,out.width="50%",fig.align='center'}
+knitr::include_graphics("auto_ID.png")
+```
+- Now your URL will be:
+
+``` yaml 
+https://emorycollege.co1.qualtrics.com/jfe/form/SV_5oRtfSVUgYc8yvc?PROLIFIC_auto_ID=5eb864599d66767bb037f277`
+```
+
+---
+# Passing an ID from Prolific to Pavlovia
+
+Since you will most likely to have a Qualtrics survey to begin with, we will skip the chaining with Prolific -> Pavlovia
+
+
+Check out [this documentation](https://www.psychopy.org/online/prolificIntegration.html) 
+
+<br>
+<br>
+
+Linking to Pavlovia directly, use a URL like this one:
+
+```yaml
+https://pavlovia.org/run/Yliu668/mrt_ganis_rep/html/?participant={{%PROLIFIC_PID%}}&study_id={{%STUDY_ID%}}&Group={{%SESSION_ID%}}
+```
+
+---
+# How to confirm participants have completed your study
 
 - Copy the completion url from Prolific
 - Make sure participants click this link at the **end** of your study
@@ -150,9 +226,8 @@ knitr::include_graphics("https://www.psychopy.org/_images/prolificSettingsInsert
 knitr::include_graphics("complete_url.png")
 ```
 
-```
+``` yaml
 https://app.prolific.co/submissions/complete?cc=284E0002
-
 ```
 ---
 
@@ -172,30 +247,67 @@ knitr::include_graphics(c("qualtrics_complete.png", "prolific_page.png"))
 ```
 
 ---
+# How do you send IDs from Pavlovia to Qualtircs?
+If you have post-experiment questionnaires, chances are you need to re-direct your participants to Qualtrics again after their completion of the main experiment
 
-# Tables
+<br>
 
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+In `Completed URL` dialog, 
+you can save yourself time by using the sample code below:
 
-```{r}
-knitr::kable(head(iris), format = 'html')
+```yaml
+$"https://yourqualtricsURL?id="+expInfo['participant']
 ```
 
+Just make sure you have the embedded data in your Qualtrics form. Here the **query string** is .can-edit[id].
+
 ---
+# tips and tricks for _Prolific_  
+- Add prescreening questions. For example:
+
+  - Gender
+  - Vision
+  - Language
+
+--
+<br>
+
+- Set `Previous Studies screener` to exclude multiple attempts
+<br>
+
+- Approval by upload
+  - I usually filter out participants who got correct attention checks in a csv file
 
 
-```{r eval=require('DT'), tidy=FALSE}
+---
+# New feature: download demographic data
+
+This is a sample demographic output
+
+```{r, echo=FALSE, warning=FALSE, include=FALSE}
+library(readr)
+data<-read_csv("demo_data.csv")
+```
+
+```{r eval=require('DT'), tidy=TRUE,echo=FALSE,warning=FALSE}
 DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 8)
+  head(data, 6),
+  fillContainer = FALSE, options = list(pageLength = 20,
+                                        scrollY=600,
+                                        dom="ti",
+                                        odering=FALSE)
 )
 ```
 
 ---
 class: center, middle
 
-# Thanks!
+```{r, echo=FALSE, out.width="40%", fig.align = 'center'}
+knitr::include_graphics("https://pbs.twimg.com/profile_images/1133752450639384577/683JMQ1q_400x400.jpg")
+```
 
-## Resources
+# Thanks! Now you will be ready!
+# More questions? 
+
 
 

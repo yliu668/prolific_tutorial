@@ -1,0 +1,6 @@
+participant_id,status,started_datetime,completed_date_time,time_taken,age,num_approvals,num_rejections,prolific_score,reviewed_at_datetime,entered_code,Country of Birth,Current Country of Residence,Employment Status,First Language,Gender identity,Nationality,Sex,Student Status,Vision
+600f80b4af87,AWAITING REVIEW,05:03.5,32:30.7,1647.18,26,47,2,95,,709148C1,United States,United States,Full-Time,English,Male,United States,Male,No,Yes
+603f249dfcae,AWAITING REVIEW,18:26.6,03:12.1,2685.484,20,23,0,100,,709148C1,India,Canada,Part-Time,Hindi,Male,Canada,Male,Yes,Yes
+5dd5325d1c93,AWAITING REVIEW,31:56.0,58:00.4,1564.392,34,66,0,100,,709148C1,Hungary,United Kingdom,Unemployed (and job seeking),Hungarian,Male,Hungary,Male,No,Yes
+60df59d91d7f7,AWAITING REVIEW,41:03.3,59:28.3,1104.965,23,15,0,100,,709148C1,United Kingdom,United Kingdom,Other,English,Male,United Kingdom,Male,Yes,Yes
+60sec714bee59,AWAITING REVIEW,42:00.9,59:33.3,1052.445,27,28,0,100,,709148C1,Canada,Canada,Unemployed (and job seeking),English,Male,Canada,Male,No,Yes
